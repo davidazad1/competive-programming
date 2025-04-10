@@ -1,3 +1,21 @@
+  ///////////////////////////////////////////////
+ // write instead of header in main .cpp file //
+///////////////////////////////////////////////
+
+// #ifndef ONLINE_JUDGE
+// #include "template.h"
+// #else
+// #include "bits/stdc++.h"
+// using namespace std;
+// #define debug(...)
+// #define debugArr(...)
+// #endif
+
+ ///////////////////////////////////////////////
+///////////////////////////////////////////////
+
+
+
 #ifndef DEBUG_TEMPLATE_CPP
 #define DEBUG_TEMPLATE_CPP
 #ifndef _GLIBCXX_NO_ASSERT
