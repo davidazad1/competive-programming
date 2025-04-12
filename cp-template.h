@@ -276,16 +276,69 @@ namespace __DEBUG_UTIL__
             cerr << names[ind];
         for (ind++; names[ind] and names[ind] != ','; ind++)
             ;
-        cerr << " = {";
+        cerr << " = {\n";
         for (size_t i = 0; i < N; i++)
-            cerr << (i ? "," : ""), print(arr[i]);
+        {
+            cerr << "  [" << i << "] = ";
+            print(arr[i]);
+            cerr << "\n";
+        }
         cerr << "}";
         if (sizeof...(tail))
             cerr << " ||", printerArr(names + ind + 1, tail...);
         else
             cerr << "]\n";
     }
+
+    template<typename T>
+    int printNdArr(T *arr, int numberOfD, const int *Ds, int i=0)
+    {
+        if(i == numberOfD-1)
+        {
+            for(int f0=0; f0<Ds[numberOfD-1]; f0++)
+            {
+                cout<<'['<<f0<<"]= "<<*(arr+f0)<<' ';
+            }
+            return Ds[i];
+        }
+        
+        int count{0};
+    
+        for(int f0=0; f0<Ds[i]; f0++)
+        {
+            cerr<<'\n'<<string((i+1)*2, ' ')<<"["<<f0<<"]={ ";
+            count+= printNdArr(arr+count, numberOfD, Ds, i+1);
+            if(i+2 == numberOfD)
+                cerr<<" }";
+            else
+                cerr<<'\n'<<string((i+1)*2, ' ')<<"}";
+        }
+        
+        return count;
+    }
+
+    template <typename T, typename... V>
+    void printerArr(const char *names, T arr[], int numberOfD, initializer_list<int> Ds, V... tail)
+    {
+        size_t ind = 0;
+        for (; names[ind] and names[ind] != ','; ind++)
+            cerr << names[ind];
+        for (ind++; names[ind] and names[ind] != ','; ind++)
+            ;
+        
+        const int *DsArr= Ds.begin();
+        printNdArr(arr, numberOfD, DsArr); 
+        cout<<endl;
+
+
+        if (sizeof...(tail))
+            cerr << " ||", printerArr(names + ind + 1, tail...);
+        else
+            cerr << "]\n";
+    }
 }
+
+
 #ifndef ONLINE_JUDGE
 #define debug(...) std::cerr << __LINE__ << ": [", __DEBUG_UTIL__::printer(#__VA_ARGS__, __VA_ARGS__)
 #define debugArr(...) std::cerr << __LINE__ << ": [", __DEBUG_UTIL__::printerArr(#__VA_ARGS__, __VA_ARGS__)
